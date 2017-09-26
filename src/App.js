@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { knuthShuffle } from 'knuth-shuffle';
 
 import Alphabet from './components/Alphabet';
 import Button from './components/Button';
@@ -14,28 +15,26 @@ const Wrapper = styled.div`
     top: 0;
 `;
 
-const characters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+const characters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+knuthShuffle(characters);
 
 class App extends Component {
-    constructor(props, context) {
-        super(props, context);
-        this.nextCharacter = this.nextCharacter.bind(this);
-        this.randomCharacter = this.randomCharacter.bind(this);
-
-        this.state = {
-            activeCharacter: this.randomCharacter(),
-        };
+    state = {
+        activeCharacter: '',
+        activeMarker: 0,
     }
 
-    randomCharacter() {
-        return characters[Math.floor(Math.random() * (25-0))];
-    }
-
-    nextCharacter() {
-        const newActiveCharacter = this.randomCharacter();
+    nextCharacter = () => {
+        const newActiveCharacter = characters[this.state.activeMarker];
+        const newActiveMarker = this.state.activeMarker + 1;
         this.setState({
             activeCharacter: newActiveCharacter,
+            activeMarker: newActiveMarker,
         });
+    }
+
+    componentWillMount() {
+        this.nextCharacter();
     }
 
     render() {
