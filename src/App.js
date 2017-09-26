@@ -19,25 +19,22 @@ const characters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 
 knuthShuffle(characters);
 
 class App extends Component {
-    constructor(props, context) {
-        super(props, context);
-        this.nextCharacter = this.nextCharacter.bind(this);
-        this.randomCharacter = this.randomCharacter.bind(this);
-
-        this.state = {
-            activeCharacter: this.randomCharacter(),
-        };
+    state = {
+        activeCharacter: '',
+        activeMarker: 0,
     }
 
-    randomCharacter() {
-        return characters[Math.floor(Math.random() * (25-0))];
-    }
-
-    nextCharacter() {
-        const newActiveCharacter = this.randomCharacter();
+    nextCharacter = () => {
+        const newActiveCharacter = characters[this.state.activeMarker];
+        const newActiveMarker = this.state.activeMarker + 1;
         this.setState({
             activeCharacter: newActiveCharacter,
+            activeMarker: newActiveMarker,
         });
+    }
+
+    componentWillMount() {
+        this.nextCharacter();
     }
 
     render() {
